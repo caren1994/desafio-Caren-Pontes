@@ -13,6 +13,13 @@ class CaixaDaLanchonete {
         this.formaDePagamento = ['debito', 'credito', 'dinheiro'];
     }
 
+    validarFormaDePagamento(formaDePagamento) {
+        if (!this.formaDePagamento.includes(formaDePagamento)) {
+            return 'Forma de pagamento inválida!';
+        }
+        return null;
+    }
+
     calcularValorDaCompra(metodoDePagamento, itens) {
         return "";
     }
