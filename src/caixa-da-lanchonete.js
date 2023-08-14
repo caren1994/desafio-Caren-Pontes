@@ -19,6 +19,16 @@ class CaixaDaLanchonete {
         }
         return null;
     }
+    calcularValorComDescontoOuAcrecimo(total, formaDePagamento) {
+        //desconto de 5% ou seja pagando 95% do valor então multiplico por 0.95
+        if (formaDePagamento === 'dinheiro') {
+            return total * 0.95;
+        //acréscimo de 3% ou seja pagando 103% do valor então multiplico por 1.03
+        } else if (formaDePagamento === 'credito') {
+            return total * 1.03;
+        }
+        return total;
+    }
 
     calcularValorDaCompra(metodoDePagamento, itens) {
         return "";
