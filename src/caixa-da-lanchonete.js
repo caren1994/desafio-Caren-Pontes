@@ -26,7 +26,7 @@ class CaixaDaLanchonete {
         }
         return null;
     }
-    
+
     calcularValorComDescontoOuAcrecimo(total, formaDePagamento) {
         //desconto de 5% ou seja pagando 95% do valor então multiplico por 0.95
         if (formaDePagamento === 'dinheiro') {
@@ -38,10 +38,58 @@ class CaixaDaLanchonete {
         return total;
     }
 
-    calcularValorDaCompra(metodoDePagamento, itens) {
-        return "";
+    calcularTotal(opcaoMenu, quantidade) {
+        // convertendo a string quantidade em um número inteiro usando a base decimal 
+        return opcaoMenu.valor * parseInt(quantidade, 10);
     }
 
+    calcularValorDaCompra(metodoDePagamento, itens) {
+      //inicializando avariável total
+      let total = 0;
+
+      const erroFormaPagamento = this.validarFormaDePagamento(metodoDePagamento);
+      if (erroFormaPagamento) {
+          return erroFormaPagamento;
+      }
+
+      const erroItens = this.validarItens(itens);
+      if (erroItens) {
+          return erroItens;
+      }
+
+      for (let item of itens) {
+          //separando o código do item e a quantidade pela virgula
+          const [codigo, quantidade] = item.split(',');
+          const opcaoMenu = this.cardapio.find(opcao => opcao.codigo === codigo);
+
+          if (!opcaoMenu) {
+              return 'Item inválido!';
+          }
+
+          //verificação para que o item extra não seja pedido sem o principal
+          if (codigo === 'chantily' || codigo === 'queijo') {
+              //para verificar se algum item na lista itens começa com 'cafe' ou 'sanduiche'
+              const hasCafe = itens.some(item => item.startsWith('cafe'));
+              const hasSanduiche = itens.some(item => item.startsWith('sanduiche'));
+
+              if (!hasCafe || !hasSanduiche) {
+                  return 'Item extra não pode ser pedido sem o principal';
+              }
+          }
+
+          total += this.calcularTotal(opcaoMenu, quantidade);
+      }
+
+      if (total === 0) {
+          return 'Quantidade inválida!';
+      }
+
+      total = this.calcularValorComDescontoOuAcrecimo(total, metodoDePagamento);
+
+      //formatando para 2 casas decimais e trocando o . pela , com o replace
+      return `R$ ${total.toFixed(2).replace('.', ',')}`;
+  }
 }
+
 
 export { CaixaDaLanchonete };
