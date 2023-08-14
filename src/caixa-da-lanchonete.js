@@ -19,6 +19,14 @@ class CaixaDaLanchonete {
         }
         return null;
     }
+
+    validarItens(itens) {
+        if (itens.length === 0) {
+            return 'Não há itens no carrinho de compra!';
+        }
+        return null;
+    }
+    
     calcularValorComDescontoOuAcrecimo(total, formaDePagamento) {
         //desconto de 5% ou seja pagando 95% do valor então multiplico por 0.95
         if (formaDePagamento === 'dinheiro') {
